@@ -7,7 +7,7 @@ set -e
 SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 ATTACKS_DIR="${SCRIPT_DIR}/sample_attacks"
-TARGETED_ATTACKS_DIR="${SCRIPT_DIR}/sample_targeted_attacks"
+#TARGETED_ATTACKS_DIR="${SCRIPT_DIR}/sample_targeted_attacks"
 DEFENSES_DIR="${SCRIPT_DIR}/sample_defenses"
 DATASET_DIR="${SCRIPT_DIR}/dataset/images"
 DATASET_METADATA_FILE="${SCRIPT_DIR}/dataset/dev_dataset.csv"
@@ -19,17 +19,17 @@ MAX_EPSILON=16
 if [[ "${OSTYPE}" == "darwin"* ]]; then
     WORKING_DIR="/private"$(mktemp -d)
 else
-    WORKING_DIR=$(mktemp -d)
+    WORKING_DIR="${SCRIPT_DIR}/result"
 fi
 echo "Preparing working directory: ${WORKING_DIR}"
 mkdir "${WORKING_DIR}/attacks"
-mkdir "${WORKING_DIR}/targeted_attacks"
+#mkdir "${WORKING_DIR}/targeted_attacks"
 mkdir "${WORKING_DIR}/defenses"
 mkdir "${WORKING_DIR}/dataset"
 mkdir "${WORKING_DIR}/intermediate_results"
 mkdir "${WORKING_DIR}/output_dir"
 cp -R "${ATTACKS_DIR}"/* "${WORKING_DIR}/attacks"
-cp -R "${TARGETED_ATTACKS_DIR}"/* "${WORKING_DIR}/targeted_attacks"
+#cp -R "${TARGETED_ATTACKS_DIR}"/* "${WORKING_DIR}/targeted_attacks"
 cp -R "${DEFENSES_DIR}"/* "${WORKING_DIR}/defenses"
 cp -R "${DATASET_DIR}"/* "${WORKING_DIR}/dataset"
 cp "${DATASET_METADATA_FILE}" "${WORKING_DIR}/dataset.csv"
@@ -37,7 +37,6 @@ cp "${DATASET_METADATA_FILE}" "${WORKING_DIR}/dataset.csv"
 echo "Running attacks and defenses"
 python "${SCRIPT_DIR}/run_attacks_and_defenses.py" \
   --attacks_dir="${WORKING_DIR}/attacks" \
-  --targeted_attacks_dir="${WORKING_DIR}/targeted_attacks" \
   --defenses_dir="${WORKING_DIR}/defenses" \
   --dataset_dir="${WORKING_DIR}/dataset" \
   --intermediate_results_dir="${WORKING_DIR}/intermediate_results" \
